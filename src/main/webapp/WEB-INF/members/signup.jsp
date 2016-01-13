@@ -13,28 +13,30 @@
 	</div>
 	
 	<div class="row">
-		<div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
-			<spring:form role="form" modelAttribute="">
+		<div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+			
+			<form:form role="form" modelAttribute="signUpForm">			
+				<form:errors path="*" element="div" cssClass="alert alert-danger" />
 				<div class="row">
 					<div class="col-xs-12 col-sm-6 col-md-6">
 						<div class="form-group">
-							<spring:input type="text" tabindex="1" placeholder="First name" class="form-control input-lg" path="firstName" />
+							<form:input type="text" tabindex="1" placeholder="First name" class="form-control input-lg" path="firstName" />
 						</div>
 					</div>
 					<div class="col-xs-12 col-sm-6 col-md-6">
 						<div class="form-group">
-							<input type="text" tabindex="2" placeholder="Last name" class="form-control input-lg" name="lastName">
+							<form:input type="text" tabindex="2" placeholder="Last name" class="form-control input-lg" path="lastName" />
 						</div>
 					</div>
 				</div>
 				<div class="form-group">
-					<input type="text" tabindex="3" placeholder="Nickname" class="form-control input-lg" name="nickname">
+					<form:input type="text" tabindex="3" placeholder="Nickname" class="form-control input-lg" path="nickname" />
 				</div>
 				<div class="form-group">
-					<input type="email" tabindex="4" placeholder="Email address" class="form-control input-lg" name="email">
+					<form:input type="email" tabindex="4" placeholder="Email address" class="form-control input-lg" path="email" />
 				</div>
 				<div class="form-group">
-					<input type="password" tabindex="5" placeholder="Password" class="form-control input-lg" name="password">
+					<form:input type="password" tabindex="5" placeholder="Password" class="form-control input-lg" path="password" />
 				</div>
 				<div class="row">
 					<div class="col-xs-12 col-md-12">
@@ -48,7 +50,7 @@
 						 By signing up, you agree to the Terms of Service
 					</div>
 				</div>
-			</spring:form>
+			</form:form>
 		</div>
 	</div>
 </div>

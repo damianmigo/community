@@ -10,7 +10,7 @@
 			<url-pattern>*.jsp</url-pattern>
 			<el-ignored>false</el-ignored>
 			<scripting-invalid>true</scripting-invalid>
-			<include-prelude>/common/prelude.jspf</include-prelude>
+			<include-prelude>/WEB-INF/common/prelude.jspf</include-prelude>
 		</jsp-property-group>
 	</jsp-config>
 	

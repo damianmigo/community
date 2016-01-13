@@ -2,24 +2,29 @@ package info.devfiles.community.web.controllers;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import info.devfiles.community.entities.Profile;
+import info.devfiles.community.repositories.CustomUserRepository;
 import info.devfiles.community.web.forms.SignUpForm;
+import info.devfiles.community.web.forms.SignUpFormValidator;
 import info.devfiles.passport.tools.UserManager;
 
 @Controller
 public class MembersController {
 
-	private MongoRepository<Profile, String> userRepository;
+	private CustomUserRepository userRepository;
 	
 	private UserManager UserManager;
+	
+	private SignUpFormValidator signUpFormValidator;
 	
 	@RequestMapping("/members")
 	public String index(Model model) {
@@ -28,25 +33,28 @@ public class MembersController {
 	}
 	
 	@RequestMapping("/members/signup")
-	public String signUp(Model model, SignUpForm signUpForm, HttpServletRequest request) {
+	public String signUp(HttpServletRequest request, HttpServletResponse response, 
+			Model model, SignUpForm signUpForm, BindingResult result) {
 		if (HttpMethod.POST.toString().equalsIgnoreCase(request.getMethod())) {
-			Profile profile = new Profile(signUpForm.getEmail(), signUpForm.getPassword());
-			profile.setFirstName(signUpForm.getFirstName());
-			profile.setLastName(signUpForm.getLastName());
-			profile.setNickname(signUpForm.getNickname());
-			getUserManager().registerUser(profile);
-			return "members/signUp";
-		} else {
-			return "members/signUp";
+			getSignUpFormValidator().validate(signUpForm, result);
+			if (!result.hasErrors()) {
+				Profile profile = new Profile(signUpForm.getEmail(), signUpForm.getPassword());
+				profile.setFirstName(signUpForm.getFirstName());
+				profile.setLastName(signUpForm.getLastName());
+				profile.setNickname(signUpForm.getNickname());
+				getUserManager().registerUser(profile);
+				return "members/myaccount";
+			}
 		}
+		return "members/signup";
 	}
 
-	public MongoRepository<Profile, String> getUserRepository() {
+	public CustomUserRepository getUserRepository() {
 		return userRepository;
 	}
 
 	@Resource(name="userRepository")
-	public void setUserRepository(MongoRepository<Profile, String> userRepository) {
+	public void setUserRepository(CustomUserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 
@@ -57,6 +65,15 @@ public class MembersController {
 	@Autowired
 	public void setUserManager(UserManager userManager) {
 		UserManager = userManager;
+	}
+
+	public SignUpFormValidator getSignUpFormValidator() {
+		return signUpFormValidator;
+	}
+
+	@Autowired
+	public void setSignUpFormValidator(SignUpFormValidator signUpFormValidator) {
+		this.signUpFormValidator = signUpFormValidator;
 	}
 	
 }
